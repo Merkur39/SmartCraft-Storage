@@ -18,7 +18,8 @@ namespace SmartCraftStorage.Stations
                     bool enabled = isKiln ? StationConfig.KilnAutoRefuel.Value : StationConfig.SmelterAutoRefuel.Value;
                     if (!enabled
                         || __instance.m_nview == null || !__instance.m_nview.IsValid()
-                        || !__instance.m_nview.IsOwner())
+                        || !__instance.m_nview.IsOwner()
+                        || !SmelterStations.IsAutomationEnabled(__instance))
                     {
                         return;
                     }
@@ -220,7 +221,7 @@ namespace SmartCraftStorage.Stations
                 {
                     bool isKiln = KilnDetection.IsKiln(__instance);
                     bool enabled = isKiln ? StationConfig.KilnAutoCollect.Value : StationConfig.SmelterAutoCollect.Value;
-                    if (!enabled)
+                    if (!enabled || !SmelterStations.IsAutomationEnabled(__instance))
                     {
                         return true;
                     }
@@ -309,7 +310,8 @@ namespace SmartCraftStorage.Stations
                 for (int i = 0; i < hitCount; i++)
                 {
                     var smelter = NearbyContainers.Hits[i].GetComponentInParent<Smelter>();
-                    if (smelter == null || smelter == kiln || !seen.Add(smelter) || KilnDetection.IsKiln(smelter))
+                    if (smelter == null || smelter == kiln || !seen.Add(smelter) || KilnDetection.IsKiln(smelter)
+                        || !SmelterStations.IsAutomationEnabled(smelter))
                     {
                         continue;
                     }

@@ -44,6 +44,13 @@ because oats are also a cooking ingredient and the windmill would otherwise grin
 your whole stock. You can still feed a blocked item by hand, and locking a stack
 with `Alt + left-click` also keeps stations away from it.
 
+To leave one of these machines out entirely, use its own switch:
+`WindmillAutomation`, `SpinningWheelAutomation`, `BlastFurnaceAutomation` or
+`EitrRefineryAutomation`. With a switch off the mod ignores that machine: it stops
+pulling from chests, its output is not stored in a chest (it drops as in the base
+game), and a charcoal kiln will not feed it coal. The regular smelter keeps using
+`SmelterAutoRefuel` and `SmelterAutoCollect`.
+
 ## Charcoal kiln
 
 Same radius as the smelter (configured together). Unlike the fireplace, it

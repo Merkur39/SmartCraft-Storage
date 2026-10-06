@@ -84,6 +84,10 @@ Two things worth knowing:
 | `FireplaceAutoRefuel` | on | Fireplaces automatically pull fuel |
 | `SmelterAutoRefuel` | on | Smelters automatically pull ore/fuel |
 | `SmelterAutoRefuelBlacklist` | `Oat` | Comma-separated items that smelter-type stations never pull from chests on their own — see the Stations page |
+| `WindmillAutomation` | on | Turn off to make the mod ignore windmills completely: they stop pulling from chests and their output drops as in the base game |
+| `SpinningWheelAutomation` | on | The same, for spinning wheels |
+| `BlastFurnaceAutomation` | on | The same, for blast furnaces |
+| `EitrRefineryAutomation` | on | The same, for eitr refineries |
 | `SmelterAutoCollect` | on | Smelters store their output in a chest |
 | `KilnAutoRefuel` | on | Kilns automatically pull wood |
 | `KilnAutoCollect` | on | Kilns store/redirect the coal they produce |

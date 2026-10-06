@@ -19,6 +19,10 @@ namespace SmartCraftStorage.Stations
         public static ConfigEntry<bool> FireplaceAutoRefuel;
         public static ConfigEntry<bool> SmelterAutoRefuel;
         public static ConfigEntry<string> SmelterAutoRefuelBlacklist;
+        public static ConfigEntry<bool> WindmillAutomation;
+        public static ConfigEntry<bool> SpinningWheelAutomation;
+        public static ConfigEntry<bool> BlastFurnaceAutomation;
+        public static ConfigEntry<bool> EitrRefineryAutomation;
         public static ConfigEntry<bool> SmelterAutoCollect;
         public static ConfigEntry<bool> KilnAutoRefuel;
         public static ConfigEntry<bool> KilnAutoCollect;
@@ -90,6 +94,10 @@ namespace SmartCraftStorage.Stations
             SmelterAutoRefuelBlacklist = config.Bind("Stations", "SmelterAutoRefuelBlacklist", "Oat",
                 new ConfigDescription("Comma-separated items that smelter-type stations (smelter, blast furnace, windmill, spinning wheel, eitr refinery) must never pull from nearby chests on their own. Use the prefab name (Oat), the item token ($item_oat) or the name shown in game (Oats); case does not matter. You can still feed a blocked item by hand. Oat is listed by default because it is also a cooking ingredient, and the windmill would otherwise grind your whole stock. Charcoal kiln wood has its own setting, KilnRegularWoodOnly.",
                     null, new ConfigurationManagerAttributes { IsAdminOnly = true }));
+            WindmillAutomation = BindStationAutomation(config, "WindmillAutomation", "windmills");
+            SpinningWheelAutomation = BindStationAutomation(config, "SpinningWheelAutomation", "spinning wheels");
+            BlastFurnaceAutomation = BindStationAutomation(config, "BlastFurnaceAutomation", "blast furnaces");
+            EitrRefineryAutomation = BindStationAutomation(config, "EitrRefineryAutomation", "eitr refineries");
             SmelterAutoCollect = config.Bind("Stations", "SmelterAutoCollect", true,
                 new ConfigDescription("Smelters store the produced bar in a nearby chest instead of dropping it on the ground. Which chest is picked is set by ChestOutputStrategy.",
                     null, new ConfigurationManagerAttributes { IsAdminOnly = true }));
@@ -153,6 +161,16 @@ namespace SmartCraftStorage.Stations
                     "Overrides how long (in seconds) a fermenter takes to finish, for every base it processes. 0 means don't override: the fermenter keeps its own vanilla duration.",
                     new AcceptableValueRange<float>(0f, 86400f),
                     new ConfigurationManagerAttributes { IsAdminOnly = true }));
+        }
+
+        // These stations are all built as a smelter, so SmelterAutoRefuel/SmelterAutoCollect
+        // cannot tell them apart. Switching one off makes the mod ignore it completely: it
+        // stops pulling from chests, and its output is no longer redirected into one.
+        private static ConfigEntry<bool> BindStationAutomation(ConfigFile config, string key, string plural)
+        {
+            return config.Bind("Stations", key, true,
+                new ConfigDescription("Turn off to make the mod ignore " + plural + " completely: they stop pulling ingredients from nearby chests, and what they produce is no longer stored in a chest, it drops as in the base game.",
+                    null, new ConfigurationManagerAttributes { IsAdminOnly = true }));
         }
     }
 }

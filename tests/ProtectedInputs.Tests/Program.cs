@@ -27,6 +27,9 @@ internal static class Program
         Cases.Add(("a remote chest is reloaded before ownership is claimed", RemoteChestIsReloadedBeforeClaiming));
         Cases.Add(("smelter auto-refuel skips blacklisted inputs by prefab, token or shown name", SmelterBlacklistSkipsListedInputs));
         Cases.Add(("smelter auto-refuel still pulls inputs that are not blacklisted", SmelterBlacklistKeepsOtherInputs));
+        Cases.Add(("a disabled smelter-type station stops pulling from chests", DisabledStationStopsPulling));
+        Cases.Add(("a disabled smelter-type station no longer redirects its output", DisabledStationOutputIsLeftToTheGame));
+        Cases.Add(("turning one station off leaves the other smelter-type stations alone", DisabledStationLeavesOthersAlone));
 
         int failed = 0;
         foreach (var test in Cases)
@@ -453,6 +456,83 @@ internal static class Program
 
                 Equal(1, smelter.Progress);
                 Equal(0, chest.GetInventory().CountItems("input"));
+            });
+        }
+    }
+
+    private static readonly (string Name, Func<SmartCraftStorage.Stations.Setting<bool>> Setting)[] SmelterTypeStations =
+    {
+        ("$piece_windmill", () => SmartCraftStorage.Stations.StationConfig.WindmillAutomation),
+        ("$piece_spinningwheel", () => SmartCraftStorage.Stations.StationConfig.SpinningWheelAutomation),
+        ("$piece_blastfurnace", () => SmartCraftStorage.Stations.StationConfig.BlastFurnaceAutomation),
+        ("$piece_eitrrefinery", () => SmartCraftStorage.Stations.StationConfig.EitrRefineryAutomation),
+    };
+
+    private static void WithStationAutomation(Func<SmartCraftStorage.Stations.Setting<bool>> setting, bool value, Action body)
+    {
+        var entry = setting();
+        bool previous = entry.Value;
+        entry.Value = value;
+        try { body(); }
+        finally { entry.Value = previous; }
+    }
+
+    private static int PullFromChest(string stationName)
+    {
+        TestWorld.ClearChests();
+        var chest = TestWorld.CreateChest();
+        chest.GetInventory().AddStack("input", 1, worldLevel: 3);
+        var smelter = new Smelter { m_name = stationName };
+        smelter.ConfigureInput("input");
+
+        InvokeNested(SmelterRefuelPatch, "Postfix", new object[] { smelter }, _ => { });
+
+        return smelter.Progress;
+    }
+
+    private static void DisabledStationStopsPulling()
+    {
+        foreach (var station in SmelterTypeStations)
+        {
+            WithStationAutomation(station.Setting, false, () => Equal(0, PullFromChest(station.Name)));
+            WithStationAutomation(station.Setting, true, () => Equal(1, PullFromChest(station.Name)));
+        }
+    }
+
+    private static void DisabledStationOutputIsLeftToTheGame()
+    {
+        foreach (var station in SmelterTypeStations)
+        {
+            foreach (bool enabled in new[] { false, true })
+            {
+                WithStationAutomation(station.Setting, enabled, () =>
+                {
+                    TestWorld.ClearChests();
+                    var chest = TestWorld.CreateChest();
+                    var smelter = new Smelter { m_name = station.Name };
+                    smelter.ConfigureOutput("ore", "iron");
+
+                    WithSmelterAutoCollect(() => Collect(smelter, "ore", 1));
+
+                    Equal(enabled ? 1 : 0, chest.GetInventory().CountItems("iron"));
+                });
+            }
+        }
+    }
+
+    private static void DisabledStationLeavesOthersAlone()
+    {
+        var all = new List<string> { "$piece_smelter" };
+        foreach (var station in SmelterTypeStations) all.Add(station.Name);
+
+        foreach (var off in SmelterTypeStations)
+        {
+            WithStationAutomation(off.Setting, false, () =>
+            {
+                foreach (var name in all)
+                {
+                    Equal(name == off.Name ? 0 : 1, PullFromChest(name));
+                }
             });
         }
     }

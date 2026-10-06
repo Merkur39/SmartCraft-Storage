@@ -20,6 +20,7 @@
     <Compile Include="../../Stations/CookingStationPatches.cs" Link="Production/CookingStationPatches.cs" />
     <Compile Include="../../Stations/SmelterPatches.cs" Link="Production/SmelterPatches.cs" />
     <Compile Include="../../Stations/KilnDetection.cs" Link="Production/KilnDetection.cs" />
+    <Compile Include="../../Stations/SmelterStations.cs" Link="Production/SmelterStations.cs" />
     <Compile Include="../../Stations/FermenterPatches.cs" Link="Production/FermenterPatches.cs" />
     <Compile Include="../../Stations/FireplacePatch.cs" Link="Production/FireplacePatch.cs" />
     <Compile Include="../../Integrations/EpicLootProvider.cs" Link="Production/EpicLootProvider.cs" />

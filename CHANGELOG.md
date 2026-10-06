@@ -1,7 +1,8 @@
 # Changelog
 
 ## 0.10.1
-- Fixed crafting raw fish at the Food Preparation Table using fish from nearby chests.
+- Fixed crafting raw fish at the Food Preparation Table with fish stored in nearby chests, which did nothing when you weren't carrying any
+- Fixed stone ovens not being refueled automatically from nearby chests (community contribution by [uy8Uk4N56G](https://github.com/Zellds/SmartCraft-Storage/pull/23))
 
 ## 0.10.0
 - Added French translation for quick-stack and restock messages (community contribution by [Merkur39](https://github.com/Zellds/SmartCraft-Storage/pull/21))

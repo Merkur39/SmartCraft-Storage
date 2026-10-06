@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.0
+- New settings to switch the mod off for a single machine: `WindmillAutomation`, `SpinningWheelAutomation`, `BlastFurnaceAutomation` and `EitrRefineryAutomation`. With one off, that machine stops pulling from nearby chests and its output is no longer stored in a chest. Before, these machines could only be turned off together with the smelter
+
 ## 0.11.0
 - New `SmelterAutoRefuelBlacklist` setting: items that smelter-type stations (smelter, blast furnace, windmill, spinning wheel, eitr refinery) never pull from nearby chests on their own. Oats are listed by default, so the windmill no longer grinds your whole oat stock; clear the list to get the old behavior back (idea and first version by [Joulupukkis](https://github.com/Joulupukkis/SmartCraftStorage.SmelterFilter))
 

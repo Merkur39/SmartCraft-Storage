@@ -74,7 +74,13 @@ namespace SmartCraftStorage.AnimalFeeder
                         continue;
                     }
 
-                    chestInventory.RemoveItem(match, 1);
+                    // Claiming reloads the chest, which recreates its items, so `match`
+                    // may no longer be in it. Without this the food would be spawned
+                    // while the chest keeps its copy.
+                    if (!chestInventory.RemoveItem(match, 1))
+                    {
+                        continue;
+                    }
 
                     var spawnPosition = creaturePosition + Vector3.up * 0.5f;
                     var spawned = ItemDrop.DropItem(match, 1, spawnPosition, Quaternion.identity);

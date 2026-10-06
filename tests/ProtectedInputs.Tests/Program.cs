@@ -23,6 +23,8 @@ internal static class Program
         Cases.Add(("smelter output goes to the chest that already holds the bar", SmelterOutputPrefersTheSortedChest));
         Cases.Add(("smelter output falls through a full sorted chest to one with room", SmelterOutputFallsThroughAFullSortedChest));
         Cases.Add(("fermenter checks for room before claiming write access", FermenterChecksRoomBeforeClaimingWriteAccess));
+        Cases.Add(("an obliterator is never treated as a chest", ObliteratorIsNeverAChest));
+        Cases.Add(("a remote chest is reloaded before ownership is claimed", RemoteChestIsReloadedBeforeClaiming));
 
         int failed = 0;
         foreach (var test in Cases)
@@ -369,6 +371,36 @@ internal static class Program
 
         Equal(0, fullChest.m_nview.ClaimCount);
         Equal(false, fullChest.m_nview.Owner);
+    }
+
+    private static void ObliteratorIsNeverAChest()
+    {
+        var obliterator = TestWorld.CreateChest();
+        obliterator.IncineratorAncestor = new Incinerator();
+        var chest = TestWorld.CreateChest();
+
+        var found = NearbyContainers.Find(new UnityEngine.Vector3(), 10f, Player.m_localPlayer);
+
+        Equal(1, found.Count);
+        Equal(true, ReferenceEquals(found[0], chest));
+        Equal(false, NearbyContainers.TryClaimWriteAccess(obliterator));
+        Equal(0, obliterator.m_nview.ClaimCount);
+    }
+
+    private static void RemoteChestIsReloadedBeforeClaiming()
+    {
+        var remote = TestWorld.CreateChest();
+        remote.m_nview.Owner = false;
+        var owned = TestWorld.CreateChest();
+
+        Equal(true, NearbyContainers.TryClaimWriteAccess(remote));
+        Equal(1, remote.OwnedWhenRefreshed.Count);
+        Equal(false, remote.OwnedWhenRefreshed[0]);
+        Equal(1, remote.m_nview.ClaimCount);
+
+        Equal(true, NearbyContainers.TryClaimWriteAccess(owned));
+        Equal(0, owned.OwnedWhenRefreshed.Count);
+        Equal(0, owned.m_nview.ClaimCount);
     }
 
     private static void Collect(Smelter smelter, string ore, int stack)

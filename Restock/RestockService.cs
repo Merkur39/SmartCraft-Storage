@@ -67,6 +67,15 @@ namespace SmartCraftStorage.Restock
                     continue;
                 }
 
+                // Claiming reloads the chest, which recreates its items. Moving a stack
+                // found before that would add it to the player without removing anything
+                // from the chest, so look the stacks up again.
+                matchingStacks = chestInventory.GetAllItems().FindAll(i => i.m_shared.m_name == itemName);
+                if (matchingStacks.Count == 0)
+                {
+                    continue;
+                }
+
                 foreach (var stackInChest in matchingStacks)
                 {
                     if (needed <= 0)

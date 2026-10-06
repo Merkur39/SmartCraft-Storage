@@ -112,6 +112,7 @@ public sealed class Player : UnityEngine.Component
 
 public sealed class Vagon : UnityEngine.Component { public Container m_container; }
 public sealed class TombStone : UnityEngine.Component { }
+public sealed class Incinerator : UnityEngine.Component { }
 
 public sealed class Container : UnityEngine.Component
 {
@@ -119,6 +120,8 @@ public sealed class Container : UnityEngine.Component
     public Inventory Inventory = new Inventory();
     public bool InUse;
     public bool Access = true;
+    // Production invokes this by name before claiming a remote chest.
+    private void CheckForChanges() { }
     public Inventory GetInventory() => Inventory;
     public bool IsInUse() => InUse;
     public bool CheckAccess(long playerId) => Access;
@@ -177,4 +180,17 @@ public static class PrivateArea
 {
     public static bool Allowed = true;
     public static bool CheckAccess(UnityEngine.Vector3 position, float radius, bool flash) => Allowed;
+}
+
+namespace HarmonyLib
+{
+    public static class AccessTools
+    {
+        public static System.Reflection.MethodInfo Method(Type type, string name)
+        {
+            return type.GetMethod(name, System.Reflection.BindingFlags.Instance
+                | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
+                | System.Reflection.BindingFlags.NonPublic);
+        }
+    }
 }

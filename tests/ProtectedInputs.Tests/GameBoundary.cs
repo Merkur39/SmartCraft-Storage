@@ -132,6 +132,7 @@ public sealed class ZNetView : UnityEngine.Object
 
 public static class ZDOVars { public static int s_inUse; public static int s_fuel; public static int s_cheated; }
 public sealed class TombStone { }
+public sealed class Incinerator { }
 
 public sealed class Inventory
 {
@@ -258,6 +259,12 @@ public sealed class Container : UnityEngine.Object
     public Container() { Inventory = new Inventory { Owner = this }; }
     public Inventory GetInventory() => Inventory;
     public T GetComponent<T>() where T : class => null;
+    public Incinerator IncineratorAncestor;
+    public T GetComponentInParent<T>() where T : class => IncineratorAncestor as T;
+    public readonly List<bool> OwnedWhenRefreshed = new List<bool>();
+    // Production invokes this by name before claiming a remote chest; the game's own
+    // version reloads the inventory from the ZDO.
+    private void CheckForChanges() { OwnedWhenRefreshed.Add(m_nview.Owner); }
     public bool IsInUse() => false;
     public bool CheckAccess(long playerId) => true;
     public void Save()

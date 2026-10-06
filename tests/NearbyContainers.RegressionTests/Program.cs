@@ -102,7 +102,8 @@ internal static class Program
         cart => cart.m_nview.Data.InUse = 1,
         cart => cart.Access = false,
         cart => PrivateArea.Allowed = false,
-        cart => cart.gameObject.AddComponent<TombStone>()
+        cart => cart.gameObject.AddComponent<TombStone>(),
+        cart => cart.gameObject.AddComponent<Incinerator>()
     };
 
     private static void RejectsUnavailableCarts()

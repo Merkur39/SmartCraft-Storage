@@ -62,6 +62,17 @@ namespace SmartCraftStorage.QuickStack
                     continue;
                 }
 
+                // Claiming reloads the chest, which recreates its items: the stacks
+                // found above (and their positions) may no longer exist.
+                existingMatches = chestInventory.GetAllItems().FindAll(i =>
+                    i.m_shared.m_name == item.m_shared.m_name &&
+                    i.m_quality == item.m_quality);
+
+                if (existingMatches.Count == 0)
+                {
+                    continue;
+                }
+
                 foreach (var existingStack in existingMatches)
                 {
                     if (item.m_stack <= 0)

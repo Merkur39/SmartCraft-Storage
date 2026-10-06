@@ -36,6 +36,11 @@ you pick. The formats differ in how much shrinking they ask for:
 | `Exact` | `10(1087)` | The number in full, in the same small brackets |
 | `Spaced` | `10 (1087)` | The number in full at the game's own text size. Widest, and the most likely to be shrunk on a crowded recipe |
 
+If another mod (AzuCraftyBoxes, MyLittleUI) has already changed the amount next to an
+ingredient, this one leaves it alone instead of overwriting it, so the number shown
+depends on which mod gets to the label first. The count it shows only includes chests
+within `CraftingChestRadius`, so with that set to `0` it is what you carry.
+
 ## Output (which chest a station's product goes into)
 
 | Option | Default | Description |

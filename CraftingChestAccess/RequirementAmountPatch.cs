@@ -44,6 +44,14 @@ namespace SmartCraftStorage.CraftingChestAccess
                     return;
                 }
 
+                // Vanilla writes the bare required amount here every frame. Anything else
+                // means another mod (AzuCraftyBoxes, MyLittleUI) already rewrote the
+                // label, so leave theirs alone — they step aside the same way for us.
+                if (!int.TryParse(amountText.text, out _))
+                {
+                    return;
+                }
+
                 int required = req.GetAmount(quality) * craftMultiplier;
                 int available = player.GetInventory().CountItems(req.m_resItem.m_itemData.m_shared.m_name);
 

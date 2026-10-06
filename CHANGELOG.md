@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.11.0
+- New `SmelterAutoRefuelBlacklist` setting: items that smelter-type stations (smelter, blast furnace, windmill, spinning wheel, eitr refinery) never pull from nearby chests on their own. Oats are listed by default, so the windmill no longer grinds your whole oat stock; clear the list to get the old behavior back (idea and first version by [Joulupukkis](https://github.com/Joulupukkis/SmartCraftStorage.SmelterFilter))
+
 ## 0.10.1
 - Fixed crafting raw fish at the Food Preparation Table with fish stored in nearby chests, which did nothing when you weren't carrying any
 - Fixed stone ovens not being refueled automatically from nearby chests (community contribution by [uy8Uk4N56G](https://github.com/Zellds/SmartCraft-Storage/pull/23))

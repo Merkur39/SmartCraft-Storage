@@ -3,6 +3,9 @@
 ## 0.10.1
 - Fixed crafting raw fish at the Food Preparation Table with fish stored in nearby chests, which did nothing when you weren't carrying any
 - Fixed stone ovens not being refueled automatically from nearby chests (community contribution by [uy8Uk4N56G](https://github.com/Zellds/SmartCraft-Storage/pull/23))
+- Fixed items being destroyed when quick-stack, restock, stations or animal feeding sent them into an Obliterator. Obliterators are no longer treated as chests
+- Fixed the available-amount text overwriting what other mods (such as AzuCraftyBoxes and MyLittleUI) show next to ingredients. It now leaves the text alone when another mod has already changed it
+- Fixed a rare multiplayer problem where anything writing to a chest owned by another player could overwrite its contents with an out-of-date copy. This was already fixed for beehives, and now covers quick-stack, restock, stations, animal feeding and crafting
 
 ## 0.10.0
 - Added French translation for quick-stack and restock messages (community contribution by [Merkur39](https://github.com/Zellds/SmartCraft-Storage/pull/21))

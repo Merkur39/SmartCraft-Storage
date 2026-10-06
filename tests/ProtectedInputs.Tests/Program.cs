@@ -25,6 +25,8 @@ internal static class Program
         Cases.Add(("fermenter checks for room before claiming write access", FermenterChecksRoomBeforeClaimingWriteAccess));
         Cases.Add(("an obliterator is never treated as a chest", ObliteratorIsNeverAChest));
         Cases.Add(("a remote chest is reloaded before ownership is claimed", RemoteChestIsReloadedBeforeClaiming));
+        Cases.Add(("smelter auto-refuel skips blacklisted inputs by prefab, token or shown name", SmelterBlacklistSkipsListedInputs));
+        Cases.Add(("smelter auto-refuel still pulls inputs that are not blacklisted", SmelterBlacklistKeepsOtherInputs));
 
         int failed = 0;
         foreach (var test in Cases)
@@ -401,6 +403,58 @@ internal static class Program
         Equal(true, NearbyContainers.TryClaimWriteAccess(owned));
         Equal(0, owned.OwnedWhenRefreshed.Count);
         Equal(0, owned.m_nview.ClaimCount);
+    }
+
+    private const string SmelterRefuelPatch = "SmartCraftStorage.Stations.SmelterPatches+RefuelPatch";
+
+    private static void WithSmelterBlacklist(string list, Action body)
+    {
+        var setting = SmartCraftStorage.Stations.StationConfig.SmelterAutoRefuelBlacklist;
+        string previous = setting.Value;
+        setting.Value = list;
+        try { body(); }
+        finally { setting.Value = previous; }
+    }
+
+    private static void SmelterBlacklistSkipsListedInputs()
+    {
+        // The stub names the prefab "inputPrefab", the token "input" and the shown name "Shown input".
+        foreach (var list in new[] { "inputPrefab", "INPUT", "$input", "Shown input", "other, inputPrefab ,more" })
+        {
+            WithSmelterBlacklist(list, () =>
+            {
+                TestWorld.ClearChests();
+                var chest = TestWorld.CreateChest();
+                chest.GetInventory().AddStack("input", 1, worldLevel: 3);
+                var smelter = new Smelter();
+                smelter.ConfigureInput("input");
+
+                InvokeNested(SmelterRefuelPatch, "Postfix", new object[] { smelter }, _ => { });
+
+                Equal(0, smelter.Progress);
+                Equal(1, chest.GetInventory().CountItems("input"));
+            });
+        }
+    }
+
+    private static void SmelterBlacklistKeepsOtherInputs()
+    {
+        foreach (var list in new[] { "", "   ", "oat", "inputs, Shown other" })
+        {
+            WithSmelterBlacklist(list, () =>
+            {
+                TestWorld.ClearChests();
+                var chest = TestWorld.CreateChest();
+                chest.GetInventory().AddStack("input", 1, worldLevel: 3);
+                var smelter = new Smelter();
+                smelter.ConfigureInput("input");
+
+                InvokeNested(SmelterRefuelPatch, "Postfix", new object[] { smelter }, _ => { });
+
+                Equal(1, smelter.Progress);
+                Equal(0, chest.GetInventory().CountItems("input"));
+            });
+        }
     }
 
     private static void Collect(Smelter smelter, string ore, int stack)

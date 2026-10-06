@@ -133,6 +133,12 @@ public sealed class ZNetView : UnityEngine.Object
 public static class ZDOVars { public static int s_inUse; public static int s_fuel; public static int s_cheated; }
 public sealed class TombStone { }
 public sealed class Incinerator { }
+public sealed class Localization
+{
+    public static readonly Localization instance = new Localization();
+    public string GetSelectedLanguage() => "English";
+    public string Localize(string text) => "Shown " + text.TrimStart('$');
+}
 
 public sealed class Inventory
 {

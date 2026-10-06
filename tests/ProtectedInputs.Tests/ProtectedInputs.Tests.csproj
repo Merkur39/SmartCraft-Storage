@@ -14,6 +14,7 @@
     <Compile Include="../../Shared/UnlockedInventory.cs" Link="Production/UnlockedInventory.cs" />
     <Compile Include="../../Shared/OutputChests.cs" Link="Production/OutputChests.cs" />
     <Compile Include="../../Shared/DebugLog.cs" Link="Production/DebugLog.cs" />
+    <Compile Include="../../Shared/ItemNameFilter.cs" Link="Production/ItemNameFilter.cs" />
     <Compile Include="../../ItemMarking/ItemFlags.cs" Link="Production/ItemFlags.cs" />
     <Compile Include="../../CraftingChestAccess/InventoryChestPatches.cs" Link="Production/InventoryChestPatches.cs" />
     <Compile Include="../../Stations/CookingStationPatches.cs" Link="Production/CookingStationPatches.cs" />

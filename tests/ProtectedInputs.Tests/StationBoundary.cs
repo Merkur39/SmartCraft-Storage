@@ -172,6 +172,7 @@ namespace SmartCraftStorage.Stations
         public static readonly Setting<bool> CookingStationAutoCollect = new Setting<bool>(false);
         public static readonly Setting<float> CookingStationRadius = new Setting<float>(10);
         public static readonly Setting<bool> SmelterAutoRefuel = new Setting<bool>(true);
+        public static readonly Setting<string> SmelterAutoRefuelBlacklist = new Setting<string>("");
         public static readonly Setting<bool> KilnAutoRefuel = new Setting<bool>(true);
         public static readonly Setting<int> KilnWoodBuffer = new Setting<int>(1);
         public static readonly Setting<float> SmelterKilnRadius = new Setting<float>(10);

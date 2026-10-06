@@ -34,6 +34,16 @@ produced bar in a sorted-or-nearest chest with space. If no chest has room left,
 the remainder drops on the ground as usual (default game behavior, with
 no duplication or loss of what was already stored).
 
+The same logic drives every station the game builds as a smelter: the blast
+furnace, the windmill, the spinning wheel and the eitr refinery. Because that
+includes things you may also want to keep in a chest, `SmelterAutoRefuelBlacklist`
+lists items these stations must never pull on their own. It is a comma-separated
+list, and each entry can be the prefab name (`Oat`), the item token (`$item_oat`)
+or the name shown in game (`Oats`), in any letter case. It defaults to `Oat`,
+because oats are also a cooking ingredient and the windmill would otherwise grind
+your whole stock. You can still feed a blocked item by hand, and locking a stack
+with `Alt + left-click` also keeps stations away from it.
+
 ## Charcoal kiln
 
 Same radius as the smelter (configured together). Unlike the fireplace, it

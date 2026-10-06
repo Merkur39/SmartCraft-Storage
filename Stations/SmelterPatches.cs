@@ -176,7 +176,8 @@ namespace SmartCraftStorage.Stations
             {
                 foreach (var conversion in smelter.m_conversion)
                 {
-                    if (conversion.m_from == null)
+                    if (conversion.m_from == null
+                        || ItemNameFilter.Matches(StationConfig.SmelterAutoRefuelBlacklist.Value, conversion.m_from))
                     {
                         continue;
                     }

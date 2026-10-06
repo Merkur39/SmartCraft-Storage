@@ -18,6 +18,7 @@ namespace SmartCraftStorage.Stations
 
         public static ConfigEntry<bool> FireplaceAutoRefuel;
         public static ConfigEntry<bool> SmelterAutoRefuel;
+        public static ConfigEntry<string> SmelterAutoRefuelBlacklist;
         public static ConfigEntry<bool> SmelterAutoCollect;
         public static ConfigEntry<bool> KilnAutoRefuel;
         public static ConfigEntry<bool> KilnAutoCollect;
@@ -85,6 +86,9 @@ namespace SmartCraftStorage.Stations
                     null, new ConfigurationManagerAttributes { IsAdminOnly = true }));
             SmelterAutoRefuel = config.Bind("Stations", "SmelterAutoRefuel", true,
                 new ConfigDescription("Smelters automatically pull ore/fuel from nearby chests.",
+                    null, new ConfigurationManagerAttributes { IsAdminOnly = true }));
+            SmelterAutoRefuelBlacklist = config.Bind("Stations", "SmelterAutoRefuelBlacklist", "Oat",
+                new ConfigDescription("Comma-separated items that smelter-type stations (smelter, blast furnace, windmill, spinning wheel, eitr refinery) must never pull from nearby chests on their own. Use the prefab name (Oat), the item token ($item_oat) or the name shown in game (Oats); case does not matter. You can still feed a blocked item by hand. Oat is listed by default because it is also a cooking ingredient, and the windmill would otherwise grind your whole stock. Charcoal kiln wood has its own setting, KilnRegularWoodOnly.",
                     null, new ConfigurationManagerAttributes { IsAdminOnly = true }));
             SmelterAutoCollect = config.Bind("Stations", "SmelterAutoCollect", true,
                 new ConfigDescription("Smelters store the produced bar in a nearby chest instead of dropping it on the ground. Which chest is picked is set by ChestOutputStrategy.",

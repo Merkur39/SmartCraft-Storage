@@ -83,6 +83,7 @@ Two things worth knowing:
 | `FermenterRadius` | 10m (max 25m) | Radius in which fermenters search for bases and store the finished product |
 | `FireplaceAutoRefuel` | on | Fireplaces automatically pull fuel |
 | `SmelterAutoRefuel` | on | Smelters automatically pull ore/fuel |
+| `SmelterAutoRefuelBlacklist` | `Oat` | Comma-separated items that smelter-type stations never pull from chests on their own — see the Stations page |
 | `SmelterAutoCollect` | on | Smelters store their output in a chest |
 | `KilnAutoRefuel` | on | Kilns automatically pull wood |
 | `KilnAutoCollect` | on | Kilns store/redirect the coal they produce |

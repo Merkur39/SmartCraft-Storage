@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.1
+- Fixed a bug where a station, most often an automatic beehive, could empty a chest right after you came back to your base: it saw the chest as empty before the game had loaded it, and saved that view over the chest's contents (community contribution by [Merkur39](https://github.com/Zellds/SmartCraft-Storage/pull/32))
+
 ## 0.12.0
 - New settings to switch the mod off for a single machine: `WindmillAutomation`, `SpinningWheelAutomation`, `BlastFurnaceAutomation` and `EitrRefineryAutomation`. With one off, that machine stops pulling from nearby chests and its output is no longer stored in a chest. Before, these machines could only be turned off together with the smelter
 
